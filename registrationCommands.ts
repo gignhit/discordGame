@@ -1,10 +1,9 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import {TextInputBuilder, RESTPostAPIChatInputApplicationCommandsJSONBody} from 'discord.js'
+import {RESTPostAPIChatInputApplicationCommandsJSONBody} from 'discord.js'
 import { REST, Routes } from 'discord.js';
 
 require('dotenv').config();
 let CLIENT_ID = process.env.CLIENT_ID ?? '';
-
 
 
 export default async function registrationCommands(commands:Array<RESTPostAPIChatInputApplicationCommandsJSONBody>, rest:REST) {
