@@ -1,9 +1,10 @@
 require('dotenv').config();
 import { REST, RESTPostAPIChatInputApplicationCommandsJSONBody } from 'discord.js';
-import { FieldOfDreamsBot } from "./fieldOfDreamsBot/FieldOfDreamsBot";
+import { FieldOfDreamsBot } from "./FieldOfDreamsBot";
 import registrationCommands from './registrationCommands';
 
-let TOKEN = process.env.DISCORD_TOKEN ?? '';
+import { TOKEN } from './env';
+
 
 const rest = new REST({ version: '10' }).setToken(TOKEN);
 
@@ -13,7 +14,6 @@ const fieldOfDreamBot = new FieldOfDreamsBot();
 fieldOfDreamBot.init();
 
 commands = commands.concat(fieldOfDreamBot.regCommandsData());
-
 registrationCommands(commands, rest);
 
 

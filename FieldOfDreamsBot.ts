@@ -1,4 +1,4 @@
-import IBot from '../IBot';
+import IBot from './IBot';
 import { 
     GatewayDispatchEvents, 
     GatewayIntentBits, 
@@ -8,35 +8,33 @@ import {
     CommandInteraction, 
     RESTPostAPIChatInputApplicationCommandsJSONBody
 } from 'discord.js';
-import ICommand from './commands/ICommand';
-import StartGameFabric from './commands/StartGame';
-import StopGameFabric from './commands/StopGame';
+import { TOKEN } from './env';
+import CommandsFactory from './fieldOfDreamsBot/commands/CommandsFactory';
+
+import { STOPNAME } from './fieldOfDreamsBot/commands/StopCommand';
+import { STARTNAME } from './fieldOfDreamsBot/commands/StartCommand';
+import { GET_LETTER_NAME } from './fieldOfDreamsBot/commands/GetLetterCommand';
 
 
 export class FieldOfDreamsBot implements IBot{
-    private _ineractionGuildId:string = '';
-    private _token:string = process.env.DISCORD_TOKEN ?? '';;
+    private _token:string = TOKEN;
     private _intents:Array<GatewayIntentBits> = [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent];
 
-    private _commands = new Map<string, ICommand>()
-
-    private initCommands():void{
-        this._commands.set('start', new StartGameFabric().create());
-        this._commands.set('stop', new StopGameFabric().create());
+    private allCommandsNames():Array<string>{
+        return [STARTNAME, STOPNAME, GET_LETTER_NAME];
     }
 
     public regCommandsData(){
         let data:RESTPostAPIChatInputApplicationCommandsJSONBody[] = [];
 
-        for (let cd of this._commands.values()) {
-            data.push(cd.regData);
+        for(let name of this.allCommandsNames()){
+            data.push(new CommandsFactory().create(name)!.regData);
         }
 
         return data;
     }
 
     public init(): void {
-        this.initCommands();
         const client = new Client({ intents: this._intents });
         client.login(this._token);
 
@@ -46,9 +44,7 @@ export class FieldOfDreamsBot implements IBot{
 
         client.on('interactionCreate', async interaction=> {
             if (!interaction.isChatInputCommand()) return;
-            if(this._commands.has(interaction.commandName)){
-                this._commands.get(interaction.commandName)!.execute(interaction);
-            }
+            new CommandsFactory().create(interaction.commandName)?.execute(interaction);
         });
     }
 }

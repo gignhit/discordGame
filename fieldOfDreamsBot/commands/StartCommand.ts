@@ -1,16 +1,14 @@
+import { Game } from "../game/Game";
 import ICommand from "./ICommand";
 import { SlashCommandBuilder,RESTPostAPIChatInputApplicationCommandsJSONBody, CommandInteraction} from "discord.js";
-import ICommandsFactory from "./ICommandsFactory";
+const fs = require('fs');
 
-export default class StartGameFabric implements ICommandsFactory{
-    create(): ICommand {
-        return new StartGame();
-    }
-}
 
-class StartGame implements ICommand{
+export const STARTNAME = 'start';
+export class StartGame implements ICommand{
+
     private _regData:RESTPostAPIChatInputApplicationCommandsJSONBody = new SlashCommandBuilder()
-            .setName('start')
+            .setName(STARTNAME)
             .setDescription('Command start game')
             .toJSON();
 
@@ -18,8 +16,12 @@ class StartGame implements ICommand{
         return this._regData;
     }
 
+
     execute(interaction:CommandInteraction): void {
-        console.log('game started');
-        interaction.reply('game started');
+        if(interaction.guildId == null) return;
+        let game = new Game(interaction.channelId);
+        // console.log(interaction.channelId);
+        
+        interaction.reply(game.start());
     }
 }

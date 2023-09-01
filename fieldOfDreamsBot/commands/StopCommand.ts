@@ -1,17 +1,10 @@
 import ICommand from "./ICommand";
-import ICommandsFactory from "./ICommandsFactory";
 import { SlashCommandBuilder,RESTPostAPIChatInputApplicationCommandsJSONBody, CommandInteraction} from "discord.js";
 
-
-export default class StopGameFabric implements ICommandsFactory{
-    create(): ICommand {
-        return new StopGame();
-    }
-}
-
-class StopGame implements ICommand{
+export const STOPNAME = 'stop';
+export class StopGame implements ICommand{
     private _regData:RESTPostAPIChatInputApplicationCommandsJSONBody = new SlashCommandBuilder()
-            .setName('stop')
+            .setName(STOPNAME)
             .setDescription('Command stop game')
             .toJSON();
 
@@ -20,7 +13,6 @@ class StopGame implements ICommand{
     }
 
     execute(interaction:CommandInteraction): void {
-        console.log('game ended!');
-        interaction.reply('game ended!');
+        interaction.reply('end?');
     }
 }
