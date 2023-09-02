@@ -1,4 +1,5 @@
-import { Game } from "../game/Game";
+
+import { gameController } from "../game/GameController";
 import ICommand from "./ICommand";
 import { SlashCommandBuilder,RESTPostAPIChatInputApplicationCommandsJSONBody, CommandInteraction} from "discord.js";
 const fs = require('fs');
@@ -19,9 +20,9 @@ export class StartGame implements ICommand{
 
     execute(interaction:CommandInteraction): void {
         if(interaction.guildId == null) return;
-        let game = new Game(interaction.channelId);
+        
         // console.log(interaction.channelId);
         
-        interaction.reply(game.start());
+        interaction.reply(gameController.start(interaction.channelId, interaction.user));
     }
 }

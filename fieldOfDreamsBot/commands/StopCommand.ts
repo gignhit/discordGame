@@ -1,3 +1,4 @@
+import { gameController } from "../game/GameController";
 import ICommand from "./ICommand";
 import { SlashCommandBuilder,RESTPostAPIChatInputApplicationCommandsJSONBody, CommandInteraction} from "discord.js";
 
@@ -13,6 +14,6 @@ export class StopGame implements ICommand{
     }
 
     execute(interaction:CommandInteraction): void {
-        interaction.reply('end?');
+        interaction.reply(gameController.cancelGame(interaction.channelId, interaction.user));
     }
 }

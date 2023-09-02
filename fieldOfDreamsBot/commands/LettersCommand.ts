@@ -2,10 +2,10 @@ import { gameController } from "../game/GameController";
 import ICommand from "./ICommand";
 import { SlashCommandBuilder,RESTPostAPIChatInputApplicationCommandsJSONBody, CommandInteraction} from "discord.js";
 
-export const WORDNAME= 'check-word';
-export class WordCommand implements ICommand{
+export const INPUTED_LETTERS_NAME = 'check-inputed-letters';
+export class InputedLettersCommand implements ICommand{
     private _regData:RESTPostAPIChatInputApplicationCommandsJSONBody = new SlashCommandBuilder()
-            .setName(WORDNAME)
+            .setName(INPUTED_LETTERS_NAME)
             .setDescription('check word')
             .toJSON();
 
@@ -14,6 +14,6 @@ export class WordCommand implements ICommand{
     }
 
     execute(interaction:CommandInteraction): void {
-        interaction.reply('Отгадываемое слово: '+gameController.getword(interaction.channelId));
+        interaction.reply('Введенные буквы: ' + gameController.getLetters(interaction.channelId));
     }
 }

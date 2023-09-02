@@ -14,6 +14,9 @@ import CommandsFactory from './fieldOfDreamsBot/commands/CommandsFactory';
 import { STOPNAME } from './fieldOfDreamsBot/commands/StopCommand';
 import { STARTNAME } from './fieldOfDreamsBot/commands/StartCommand';
 import { GET_LETTER_NAME } from './fieldOfDreamsBot/commands/GetLetterCommand';
+import { INPUTED_LETTERS_NAME } from './fieldOfDreamsBot/commands/LettersCommand';
+import { WORDNAME } from './fieldOfDreamsBot/commands/WordCommand';
+import { INPUT_WORD_NAME } from './fieldOfDreamsBot/commands/InputWordCommand';
 
 
 export class FieldOfDreamsBot implements IBot{
@@ -21,16 +24,21 @@ export class FieldOfDreamsBot implements IBot{
     private _intents:Array<GatewayIntentBits> = [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent];
 
     private allCommandsNames():Array<string>{
-        return [STARTNAME, STOPNAME, GET_LETTER_NAME];
+        return [
+            STARTNAME, 
+            STOPNAME, 
+            GET_LETTER_NAME, 
+            INPUT_WORD_NAME,
+            INPUTED_LETTERS_NAME, 
+            WORDNAME,
+        ];
     }
 
     public regCommandsData(){
         let data:RESTPostAPIChatInputApplicationCommandsJSONBody[] = [];
-
         for(let name of this.allCommandsNames()){
             data.push(new CommandsFactory().create(name)!.regData);
         }
-
         return data;
     }
 

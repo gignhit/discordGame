@@ -2,16 +2,16 @@ import { gameController } from "../game/GameController";
 import ICommand from "./ICommand";
 import { SlashCommandBuilder,RESTPostAPIChatInputApplicationCommandsJSONBody, CommandInteraction} from "discord.js";
 
-export const GET_LETTER_NAME = 'input-letter';
-export class GetLetterCommand implements ICommand{
+export const INPUT_WORD_NAME = 'input-word';
+export class InputWordCommand implements ICommand{
 
     private _regData:RESTPostAPIChatInputApplicationCommandsJSONBody = new SlashCommandBuilder()
-            .setName(GET_LETTER_NAME)
+            .setName(INPUT_WORD_NAME)
             .setDescription('Получаю букву')
             .addStringOption((option) =>
                 option
-                    .setName('letter')
-                    .setDescription('Назовите букву')
+                    .setName('word')
+                    .setDescription('Назовите слово')
                     .setRequired(true)
             )
             .toJSON();
@@ -23,9 +23,9 @@ export class GetLetterCommand implements ICommand{
     execute(interaction:CommandInteraction): void {
         // console.log(interaction.options.data);
 
-        let letter = interaction.options.data[0].value?.toString().toLowerCase() ?? '';
-        // console.log(letter);
+        let word = interaction.options.data[0].value?.toString().toLowerCase() ?? '';
+        // console.log(word);
 
-        interaction.reply(gameController.inputLetter(interaction.channelId, interaction.user, letter));
+        interaction.reply(gameController.inputWord(interaction.channelId, interaction.user, word));
     }
 }
